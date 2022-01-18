@@ -1,0 +1,11 @@
+requests
+flask
+pymongo
+flask_pymongo
+flask_restful
+jsonify
+werkzeug
+jinja2
+itsdangerous
+Flask-GraphQL
+pprintpp

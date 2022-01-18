@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  app:
+    container_name: flask_app
+    build: .
+    command: python -u main.py
+    ports:
+      - "8000:5000"
+    volumes:
+      - .:/app
+    links:
+      - db
+
+  db:
+    container_name: flask_app_db
+    image: mysql:5.7
+    volumes:
+      - dbdata:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_01  
+      MYSQL_PASSWORD: root
+    ports: 
+      - "3306:3306"
+    
+    
+volumes:
+  dbdata: {}
+

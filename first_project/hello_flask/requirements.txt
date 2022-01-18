@@ -1,0 +1,10 @@
+Flask==0.12
+requests
+pymongo
+flask_pymongo
+jsonify
+werkzeug
+jinja2
+itsdangerous
+Flask-GraphQL
+flask-mongoengine

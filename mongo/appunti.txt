@@ -1,0 +1,131 @@
+ 8/11/2021
+
+ username: ty
+ password: 3oaIPm0q8MqSgXek
+
+ for connect:
+
+ mongosh "mongodb+srv://cluster0.8i6v0.mongodb.net/myFirstDatabase" --username ty
+ 
+ mongosh "mongodb+srv://cluster0.8i6v0.mongodb.net/myFirstDatabase" --username ty --password 3oaIPm0q8MqSgXek
+
+
+
+Esercizio:
+
+db.createCollection("actors")
+db.createCollection("movies")
+
+Congtrollo la creazione delle collections:
+show collections
+
+{
+  "primaryName": "Fred Astaire",
+  "birthYear": 1899,
+  "deathYear": 1987,
+  "movies": [
+    {
+      "title": "Funny Face",
+      "date": 1957
+    },
+    {
+      "title": "The Story of Vernon and Irene Castle",
+      "date": 1939
+    }
+  ]
+}
+
+db.actors.insert({
+  "primaryName": "Fred Astaire",
+  "birthYear": 1899,
+  "deathYear": 1987,
+  "movies": [
+    {
+      "title": "Funny Face",
+      "date": 1957
+    },
+    {
+      "title": "The Story of Vernon and Irene Castle",
+      "date": 1939
+    }
+  ]
+})
+
+db.actors.insert({"primaryName":"Fred Astaire","birthYear":1899,"deathYear":1987,"movies":[{"title":"Funny Face","date":1957},{"title":"The Story of Vernon and Irene Castle","date":1939}]})
+
+
+
+
+{
+  "title": "Funny Face",
+  "date": 1957,
+  "category": ["Commedy", "Musical", "Romance"],
+  "actors": [
+    {
+      "primaryName": "Fred Astaire",
+	  "birthYear": 1899,
+ 	  "deathYear": 1987
+    },
+    {
+      "primaryName": "Audrey Hepburn",
+	  "birthYear": 1929,
+ 	  "deathYear": 1993
+    }
+  ]
+}
+
+Select tutto by name
+
+db.movies.find( { title: "Funny Face" } )
+
+db.actors.find( { primaryName: "Fred Astaire" } )
+
+
+Select solo un valore
+db.movies.find({}, {actors:1, title:"Funny Face"})
+db.actors.find({}, {movies:1, primaryName:"Funny Face"})
+
+db.movies.find()
+
+
+
+
+db.movies.find( { title: "Funny Face" } )
+
+
+
+db.actors.find( { "movies.title": "Funny Face" } )
+
+
+
+
+
+
+  print(x) 
+
+
+Big Hero 6
+
+
+{
+  "title": "Big Hero 6",
+  "date": 2014,
+  "category": ["Animation", "Action", "Adventure"],
+  "actors": [
+    {
+      "primaryName": "Don Hall",
+      "birthYear": 1969,
+      "deathYear": "Nan"
+    },
+    {
+      "primaryName": "Chris Williams",
+      "birthYear": 1968,
+      "deathYear": Nan
+    }
+  ]
+}
+
+
+
+
+db.movies.insert({"Title": "Carmencita", "Start year": 1894, "genres": ["Documentary", "Short" ], "actors": [{"primaryName":"Fred Astaire","birthYear":1899,"deathYear":"1987"},{"primaryName":"Brigitte Bardot","birthYear":1934,"deathYear":"\\N"},{"primaryName":"Bette Davis","birthYear":1908,"deathYear":"1989"},{"primaryName":"Lauren Bacall","birthYear":1924,"deathYear":"2014"},{"primaryName":"John Belushi","birthYear":1949,"deathYear":"1982"},{"primaryName":"Ingmar Bergman","birthYear":1918,"deathYear":"2007"},{"primaryName":"Humphrey Bogart","birthYear":1899,"deathYear":"1957"}]})

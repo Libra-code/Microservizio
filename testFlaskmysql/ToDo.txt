@@ -1,0 +1,10 @@
+Rest api con flask e mysql
+
+
+
+
+Customer:
+String Id
+String name (nome obbligatorio)
+String surname
+

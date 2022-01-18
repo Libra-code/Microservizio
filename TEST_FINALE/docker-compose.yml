@@ -1,0 +1,89 @@
+version: "3.6"
+services:
+
+  #1
+  app_books:
+    container_name: flask_app_books
+    build: 
+      context: ./books
+      dockerfile: Dockerfile
+    command: python -u main.py
+    ports:
+      - "8000:5000"
+    volumes:
+      - .:/app
+    links:
+      - db_books
+  db_books:
+    container_name: flask_app_books_db
+    image: mysql:5.7
+    volumes:
+      - DB_books_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_01  
+      MYSQL_PASSWORD: root
+    ports: 
+      - "3306:3306"
+
+#2
+  app_borrowing:
+    container_name: flask_app_borrowing
+    build: 
+      context: ./borrowing
+      dockerfile: Dockerfile
+    command: python -u main.py
+    ports:
+      - "8001:5000"
+    volumes:
+      - .:/app
+    links:
+      - db_borrowing
+  db_borrowing:
+    container_name: flask_app_borrowing_db
+    image: mysql:5.7
+    volumes:
+      - DB_borrowing_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_01  
+      MYSQL_PASSWORD: root
+    ports: 
+      - "3307:3307"
+  
+#3
+  app_costumer:
+    container_name: flask_app_costumer
+    build: 
+      context: ./costumer
+      dockerfile: Dockerfile  
+    command: python -u main.py
+    ports:
+      - "8002:5000"
+    volumes:
+      - .:/app
+    links:
+      - db_costumer
+  db_costumer:
+    container_name: flask_app_costumer_db
+    image: mongo:4.0.27
+    hostname: library_db
+    environment:
+      - MONGO_INITDB_DATABASE=library_db
+    volumes:
+      - DB_costumer_data:/data/db
+    ports:
+      - "27017:27017"
+
+
+
+
+
+
+
+volumes:
+  DB_books_data : {}
+  DB_borrowing_data : {}
+  DB_costumer_data : {}
