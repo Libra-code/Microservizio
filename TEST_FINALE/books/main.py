@@ -9,20 +9,19 @@ api = Api(app)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///databse.db'
 #crea il database nella stessa cartella dove lo usi
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{user}:{password}@{host}/{database}?charset=utf8'.format(
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{user}:{password}@{host}/{database}?charset=utf8'.format(
     **{
       'user': os.getenv('DB_USER', 'root'),
       'password': os.getenv('DB_PASSWORD', 'root'),
       'host': os.getenv('DB_HOST', 'db_books'),
       'database': os.getenv('DB_DATABASE', 'db_01'),
     })
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_ECHO = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = False
 
 db = SQLAlchemy(app)
 
 class BookModel(db.Model):
-    """docstring for ClassName"""
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     author = db.Column(db.String(100), nullable=False)

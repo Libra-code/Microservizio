@@ -10,20 +10,19 @@ api = Api(app)
 #crea il database nella stessa cartella dove lo usi
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///databse.db'
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{user}:{password}@{host}/{database}?charset=utf8'.format(
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{user}:{password}@{host}/{database}?charset=utf8'.format(
     **{
       'user': os.getenv('DB_USER', 'root'),
       'password': os.getenv('DB_PASSWORD', 'root'),
       'host': os.getenv('DB_HOST', 'db_borrowing'),
       'database': os.getenv('DB_DATABASE', 'db_01'),
     })
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_ECHO = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = False
 
 db = SQLAlchemy(app)
 
 class BorrowingModel(db.Model):
-    """docstring for ClassName"""
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(db.Integer, nullable=False)
     costumer_id = db.Column(db.Integer, nullable=False)
