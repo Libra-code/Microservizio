@@ -10,15 +10,16 @@ api = Api(app)
 #crea il database nella stessa cartella dove lo usi
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///databse.db'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://{user}:{password}@{host}/{database}?charset=utf8'.format(
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{user}:{password}@{host}/{database}?charset=utf8'.format(
     **{
       'user': os.getenv('DB_USER', 'root'),
       'password': os.getenv('DB_PASSWORD', 'root'),
       'host': os.getenv('DB_HOST', 'db_borrowing'),
       'database': os.getenv('DB_DATABASE', 'db_01'),
     })
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = False
+
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_ECHO = False
 
 db = SQLAlchemy(app)
 
