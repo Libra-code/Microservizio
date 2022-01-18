@@ -36,16 +36,10 @@ jobs:
         id: get_commit_sha
         run: echo ::set-output name=COMMIT_SHA::$(git rev-parse --short "$GITHUB_SHA")
       - name: Build and push Docker image
-        uses: docker/build-push-action@v1.1.0 
+        uses: docker/setup-buildx-action@v1.6.0
         with:
           path:  TEST_FINALE/books
           dockerfile: TEST_FINALE/books/Dockerfile
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: ${{ secrets.DOCKER_USERNAME }}/book
-          tags: ${{ steps.get_commit_sha.outputs.COMMIT_SHA }}-${{ steps.get_branch.outputs.BRANCH }}, latest
-          build_args: |
-            TAG=${{ steps.get_commit_sha.outputs.COMMIT_SHA }}-${{ steps.get_branch.outputs.BRANCH }}
 
   build-customer:
     runs-on: ubuntu-latest
@@ -68,12 +62,6 @@ jobs:
         with:
           path: TEST_FINALE/costumer
           dockerfile: TEST_FINALE/costumer/Dockerfile
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: ${{ secrets.DOCKER_USERNAME }}/customer
-          tags: ${{ steps.get_commit_sha.outputs.COMMIT_SHA }}-${{ steps.get_branch.outputs.BRANCH }}, latest
-          build_args: |
-            TAG=${{ steps.get_commit_sha.outputs.COMMIT_SHA }}-${{ steps.get_branch.outputs.BRANCH }}
 
   build-borrowing:
     runs-on: ubuntu-latest
