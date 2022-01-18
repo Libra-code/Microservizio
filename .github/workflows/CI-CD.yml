@@ -1,0 +1,101 @@
+name: CI-CD
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build-book:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.8]
+    defaults:
+      run:
+        working-directory: TEST_FINALE/books
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Tests
+        run: |
+          python manage.py test
+      - name: Get branch
+        id: get_branch
+        run: echo ::set-output name=BRANCH::$(echo $GITHUB_REF | cut -d / -f 3)
+      - name: Get the commit SHA
+        id: get_commit_sha
+        run: echo ::set-output name=COMMIT_SHA::$(git rev-parse --short "$GITHUB_SHA")
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v1.1.0 
+        with:
+          path: api
+          dockerfile: TEST_FINALE/books
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: ${{ secrets.DOCKER_USERNAME }}/book
+          tags: ${{ steps.get_commit_sha.outputs.COMMIT_SHA }}-${{ steps.get_branch.outputs.BRANCH }}, latest
+          build_args: |
+            TAG=${{ steps.get_commit_sha.outputs.COMMIT_SHA }}-${{ steps.get_branch.outputs.BRANCH }}
+
+  build-customer:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: TEST_FINALE/costumer
+    steps:
+      - uses: actions/checkout@v2
+      - name: Add hosts to /etc/hosts
+        run: |
+          sudo echo "127.0.0.1 customer-mongodb" | sudo tee -a /etc/hosts
+      - name: Get branch
+        id: get_branch
+        run: echo ::set-output name=BRANCH::$(echo $GITHUB_REF | cut -d / -f 3)
+      - name: Get the commit SHA
+        id: get_commit_sha
+        run: echo ::set-output name=COMMIT_SHA::$(git rev-parse --short "$GITHUB_SHA")
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v1.1.0 
+        with:
+          path: TEST_FINALE/costumer
+          dockerfile: microservices_customer/Dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: ${{ secrets.DOCKER_USERNAME }}/customer
+          tags: ${{ steps.get_commit_sha.outputs.COMMIT_SHA }}-${{ steps.get_branch.outputs.BRANCH }}, latest
+          build_args: |
+            TAG=${{ steps.get_commit_sha.outputs.COMMIT_SHA }}-${{ steps.get_branch.outputs.BRANCH }}
+
+  build-borrowing:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: TEST_FINALE/borrowing
+
+    steps:
+      - name: Get branch
+        id: get_branch
+        run: echo ::set-output name=BRANCH::$(echo $GITHUB_REF | cut -d / -f 3)
+      - name: Get the commit SHA
+        id: get_commit_sha
+        run: echo ::set-output name=COMMIT_SHA::$(git rev-parse --short "$GITHUB_SHA")
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v1.1.0 
+        with:
+          path: TEST_FINALE/borrowing
+          dockerfile: microservices_borrowing/Dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: ${{ secrets.DOCKER_USERNAME }}/borrowing
+          tags: ${{ steps.get_commit_sha.outputs.COMMIT_SHA }}-${{ steps.get_branch.outputs.BRANCH }}, latest
+          build_args: |
+            TAG=${{ steps.get_commit_sha.outputs.COMMIT_SHA }}-${{ steps.get_branch.outputs.BRANCH }}
