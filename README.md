@@ -19,3 +19,6 @@ Evaluation criteria:
 - Logging and tracing   (0 to 5 points)
 - CI/CD                 (0 to 5 points)
 - Docker and Kubernetes (0 to 5 points)
+
+Impostazione servizio loggin
+![](diagram.pngMicroservizio/Implement_to_final/img/1.png)
