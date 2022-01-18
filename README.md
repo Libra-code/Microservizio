@@ -21,4 +21,4 @@ Evaluation criteria:
 - Docker and Kubernetes (0 to 5 points)
 
 Impostazione servizio loggin
-![](diagram.pngMicroservizio/Implement_to_final/img/1.png)
+![](Implement_to_final/img/1.png)
