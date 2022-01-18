@@ -20,9 +20,5 @@ Evaluation criteria:
 - CI/CD                 (0 to 5 points)
 - Docker and Kubernetes (0 to 5 points)
 
-
-
 Impostazione servizio loggin
-
-
 ![](Implement_to_final/img/1.png)
