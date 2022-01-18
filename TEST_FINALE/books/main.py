@@ -5,6 +5,7 @@ import os
 
 app = Flask(__name__)
 api = Api(app)
+
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///databse.db'
 #crea il database nella stessa cartella dove lo usi
 
