@@ -1,23 +1,14 @@
 from flask import Flask, app 
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
-import os
-
+from sqlalchemy import create_engine
 app = Flask(__name__)
 api = Api(app)
 
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///databse.db'
 #crea il database nella stessa cartella dove lo usi
-
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{user}:{password}@{host}/{database}?charset=utf8'.format(
-    **{
-      'user': os.getenv('DB_USER', 'root'),
-      'password': os.getenv('DB_PASSWORD', 'root'),
-      'host': os.getenv('DB_HOST', 'db_books'),
-      'database': os.getenv('DB_DATABASE', 'db_01'),
-    })
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_ECHO = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@flask_app_books_db/db_01'
+engine = create_engine('mysql+pymysql://root:root@flask_app_books_db/db_01')
 
 db = SQLAlchemy(app)
 
@@ -32,6 +23,7 @@ class BookModel(db.Model):
     #The class defines a __repr__() method, but that is optional is used to nicely formatted objects
 
 db.create_all()
+
 #comando che va usato solo la prima volta poiche senno riscriverebbe di continuo il db
 
 book_post_args = reqparse.RequestParser()

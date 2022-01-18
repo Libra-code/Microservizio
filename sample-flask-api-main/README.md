@@ -1,1 +1,0 @@
-A simple RESTful API using python's web framework named Flask.
