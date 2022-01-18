@@ -38,8 +38,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v1.1.0 
         with:
-          path: api
-          dockerfile: TEST_FINALE/books
+          path:  TEST_FINALE/books
+          dockerfile: TEST_FINALE/books/Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_USERNAME }}/book
@@ -67,7 +67,7 @@ jobs:
         uses: docker/build-push-action@v1.1.0 
         with:
           path: TEST_FINALE/costumer
-          dockerfile: microservices_customer/Dockerfile
+          dockerfile: TEST_FINALE/costumer/Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_USERNAME }}/customer
@@ -92,7 +92,7 @@ jobs:
         uses: docker/build-push-action@v1.1.0 
         with:
           path: TEST_FINALE/borrowing
-          dockerfile: microservices_borrowing/Dockerfile
+          dockerfile: TEST_FINALE/costumer/Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_USERNAME }}/borrowing
