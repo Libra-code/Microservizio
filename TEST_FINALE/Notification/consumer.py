@@ -1,3 +1,4 @@
+#!/usr/bin/python 
 import pika, os
 
 credentials = pika.PlainCredentials('rabbitmq', 'rabbitmq')

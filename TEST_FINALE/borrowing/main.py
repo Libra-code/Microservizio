@@ -4,6 +4,7 @@ from flask import Flask, app
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
+import pika
 
 
 app = Flask(__name__)
@@ -46,6 +47,22 @@ resource_fields = {
     'start_date':fields.String 
 }
 
+def send_message(message):
+  #notification setup
+  credentials = pika.PlainCredentials('rabbitmq', 'rabbitmq')
+  parameters = pika.ConnectionParameters('rabbitmq',
+                                    5672,
+                                    '/',
+                                    credentials)
+  connection = pika.BlockingConnection(parameters)
+  channel = connection.channel()
+  channel.queue_declare(queue='borrowing')
+
+  channel.basic_publish(exchange='',
+                    routing_key='borrowing',
+                    body=message)
+  connection.close()
+
 class Borrowing(Resource):
     @marshal_with(resource_fields)
     def get(self, borrowing_id):
@@ -65,6 +82,7 @@ class Borrowing(Resource):
         borrowing = BorrowingModel(id=borrowing_id, book_id=args['book_id'], costumer_id=args['costumer_id'], start_date=datetime.today().strftime('%Y-%m-%d'))
         db.session.add(borrowing)
         db.session.commit()
+        send_message(f"New borrowing: {str(borrowing)}")
         return borrowing, 201
 
 
