@@ -1,4 +1,5 @@
-from datetime import date, datetime
+#!/usr/bin/python 
+from datetime import datetime
 from flask import Flask, app 
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
@@ -19,33 +20,30 @@ class BorrowingModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(db.Integer, nullable=False)
     costumer_id = db.Column(db.Integer, nullable=False)
-    due_date = db.Column(db.DateTime, nullable=False)
+    start_date = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
-        return f"Borrowing(book_id = {self.book_id},costumer_id = {self.costumer_id},genre = {self.due_date})"
+        return f"Borrowing(book_id = {self.book_id},costumer_id = {self.costumer_id},start_date = {self.start_date})"
         
-
 db.create_all()
-#comando che va usato solo la prima volta poiche senno riscriverebbe di continuo il db
+
 
 borrowing_post_args = reqparse.RequestParser()
 borrowing_post_args.add_argument("book_id", type=int, help ="ID of the book borrowed is required", required=True)
 borrowing_post_args.add_argument("costumer_id", type=int, help="ID of the costumer borrowing is required", required=True)
-borrowing_post_args.add_argument("due_date", type=datetime, help ="Due date of the borrow is required", required=True)
 #aggiungendo required = true si rendono obbligatori gli argomenti
 
 #usando il patch non sono necessari tutti i campi
 borrowing_update_args = reqparse.RequestParser()
 borrowing_update_args.add_argument("book_id", type=int, help ="ID of the book borrowed")
 borrowing_update_args.add_argument("costumer_id", type=int, help ="ID of the costumer borrowing")
-borrowing_update_args.add_argument("due_date", type=datetime, help ="Due date of the borrow")
 
 
 resource_fields = {
     'id':fields.Integer,
     'book_id':fields.Integer,
     'costumer_id':fields.Integer,
-    'due_date':fields.DateTime
+    'start_date':fields.String 
 }
 
 class Borrowing(Resource):
@@ -64,7 +62,7 @@ class Borrowing(Resource):
         if result:
             abort(409, message = "borrowing id taken...")
 
-        borrowing = BorrowingModel(id=borrowing_id, book_id=args['book_id'], costumer_id=args['costumer_id'],due_date=args['due_date'])
+        borrowing = BorrowingModel(id=borrowing_id, book_id=args['book_id'], costumer_id=args['costumer_id'], start_date=datetime.today().strftime('%Y-%m-%d'))
         db.session.add(borrowing)
         db.session.commit()
         return borrowing, 201
@@ -80,8 +78,6 @@ class Borrowing(Resource):
             result.book_id = args['book_id']
         if args['costumer_id']:
             result.costumer_id = args['costumer_id']
-        if args['due_date']:
-            result.due_date = args['due_date']
         #il parser mette tutto quello che non è presente come =none
 
         db.session.commit()
@@ -93,7 +89,10 @@ class Borrowing(Resource):
         result = BorrowingModel.query.filter_by(id=borrowing_id).first()
         if not result:
             abort(404, message = "Could not find borrowing with that id")
-        del result
+        
+        
+        result = BorrowingModel.query.filter_by(id=borrowing_id).delete()
+        db.session.commit()
         return '', 204
 
 

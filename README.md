@@ -1,6 +1,15 @@
 #microservices
 API in Flask continerizzate con Mysql e MongoDb 
 
+## List of microservices 
+>1. [Books microservice](./TEST_FINALE/books):
+>expose CRUD opereration, use flask framework and mongodb database
+>1. [Customer microservice](./TEST_FINALE/customer):
+>expose CRUD opereration, use flask framework and mysql database
+>1. [Borrowing microservice](./TEST_FINALE/borrowing):
+>expose CRUD opereration, use flask framework and mysql database
+
+
 Develop 4 microservices as depicted in this diagram:
 
 ![](diagram.png)
@@ -21,4 +30,4 @@ Evaluation criteria:
 - Docker and Kubernetes (0 to 5 points)
 
 Impostazione servizio loggin
-![](Implement_to_final/img/1.png)
+![](1.png)

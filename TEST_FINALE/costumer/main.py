@@ -1,17 +1,20 @@
+#!/usr/bin/python 
 from flask import Flask,request,jsonify,json
 from flask_pymongo import PyMongo
 from flask_restful import reqparse
 import pymongo
 
+
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = 'library_db'
 app.config['MONGO_URI'] = 'mongodb://flask_app_costumer_db/library_db'
-
 mongo = PyMongo(app)
-costumer = mongo.db.library_db
-costumer.create_index([('user_id', pymongo.ASCENDING)],unique=True)
 
+
+costumer = mongo.db.library_db
+#indice per usarlo come parametro
+costumer.create_index([('user_id', pymongo.ASCENDING)],unique=True)
 
 def make_json(j):
   return json.loads(json.dumps(j))

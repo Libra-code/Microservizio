@@ -1,20 +1,28 @@
 import requests , json
+try:
+    BASE = "http://localhost:8000/"
 
-BASE = "http://localhost:8000/"
-#BASE = "http://127.0.0.1:5000/"
+    data = [{"title" : "Tim","author" :"jhon","genre" : "fantasy"},
+            {"title" : "Alex","author" : "jhon","genre" : "fantasy"},
+            {"title" : "Kong","author" : "jhon","genre" : "fantasy"}]
 
-data = [{"name" : "Tim","views" : 100,"likes" : 10},
-		{"name" : "Jon","views" : 1000,"likes" : 100},
-		{"name" : "Jim","views" : 10000,"likes" : 1000}]
+    for i in range(len(data)):
+        response = requests.post(BASE + "book/" + str(i+1), data[i])
+        print(response.json())
 
- #for i in range(len(data)):
-	#response = requests.put(BASE + "video/" + str(i), data[i])
-	#print(response.json())
-
-#input()
-response = requests.put(BASE + "video/10", {"name" : "Tim","views" : 100,"likes" : 10})
-#print(response.headers, response.status_code)
-#print(response.json())
-#input()
-#response = requests.get(BASE + "video/10")
-print(response.json())
+    #input()
+    #response = requests.patch(BASE + "book/1", {"author" : "Italy"})
+    #print(response.headers, response.status_code)
+    #print(response.json())
+    #input()
+    #response = requests.get(BASE + "book/2")
+    #print(response.json())
+    response = requests.get(BASE + "book/2")
+    print(response)
+    response = requests.delete(BASE + "book/1")
+    response = requests.delete(BASE + "book/2")
+    response = requests.delete(BASE + "book/3")
+    
+    
+except Exception as ex:
+    print (ex)

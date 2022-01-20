@@ -2,6 +2,7 @@ version: "3.6"
 services:
 
   #1
+  #books service
   app_books:
     container_name: flask_app_books
     build: 
@@ -27,7 +28,8 @@ services:
     ports: 
       - "3306:3306"
 
-#2
+  #2
+  #borrowing service
   app_borrowing:
     container_name: flask_app_borrowing
     build: 
@@ -53,7 +55,8 @@ services:
     ports: 
       - "3307:3307"
   
-#3
+  #3
+  #costumer service
   app_costumer:
     container_name: flask_app_costumer
     build: 
@@ -77,9 +80,22 @@ services:
     ports:
       - "27017:27017"
 
-
-
-
+  #4
+  #notification service
+  rabbitmq:
+    image: rabbitmq:3.8.19-rc.1-management-alpine
+    container_name: 'rabbitmq'
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
 
 
 

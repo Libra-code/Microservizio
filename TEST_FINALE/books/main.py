@@ -1,15 +1,18 @@
+#!/usr/bin/python 
 from flask import Flask, app 
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
+
+
 app = Flask(__name__)
 api = Api(app)
 
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///databse.db'
 #crea il database nella stessa cartella dove lo usi
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@flask_app_books_db/db_01'
 engine = create_engine('mysql+pymysql://root:root@flask_app_books_db/db_01')
-
 db = SQLAlchemy(app)
 
 class BookModel(db.Model):
@@ -20,11 +23,10 @@ class BookModel(db.Model):
 
     def __repr__(self):
         return f"Book(title = {self.title},author = {self.author},genre = {self.genre})"
-    #The class defines a __repr__() method, but that is optional is used to nicely formatted objects
+    #The class defines a __repr__() method,it's optional is used to nicely formatted objects
 
 db.create_all()
 
-#comando che va usato solo la prima volta poiche senno riscriverebbe di continuo il db
 
 book_post_args = reqparse.RequestParser()
 book_post_args.add_argument("title", type=str, help ="Title of the book is required", required=True)
@@ -91,7 +93,10 @@ class Book(Resource):
         result = BookModel.query.filter_by(id=book_id).first()
         if not result:
             abort(404, message = "Could not find book with that id")
-        del result
+        
+        
+        result = BookModel.query.filter_by(id=book_id).delete()
+        db.session.commit()
         return '', 204
 
 

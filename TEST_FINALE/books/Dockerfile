@@ -1,7 +1,7 @@
 # init a base image 
 FROM python:3.8-alpine
 # define the present working directory
-WORKDIR /app1
+WORKDIR /TEST_FINALE/books
 # copy the contents into the working dir
 COPY . .
 # run pip to install the dependencies of the flask app

@@ -1,70 +1,81 @@
-import datetime
-from xmlrpc.client import DateTime
-import mysql.connector
-from flask import jsonify
+#test dellle funzioni CRUD del microservizio
+#urllib3 ==> 1.26.7 
+import requests
 import json
-from datetime import datetime
 
-#convert result from sql to json
-def to_json(myresult):
-  customer_all=[]
-  for x in myresult:
-    myjson3 = {
-                'borrowing_id': x[0],
-                'book_id': x[1],
-                'customer_id': x[2] ,
-                'start_date': str(x[3])                
-            }
-    customer_all.append(myjson3)
-  customer_all_json= f'{{"results": {json.dumps(customer_all)}}}'
-  print (customer_all_json)
-  #return(jsonify(customer_all_json))
+def read_all_test():
+    try:
+        r = requests.get('http://localhost:8000/book')        
+    except requests.exceptions.ConnectionError:
+        print("connection failed!")
+        return False
+    if r.status_code == 200:
+        print("Read all successful, status code: ", r.status_code)
+        return True
+    else:
+        print("Something is wrong")
+    
 
-mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="root",
-  database="db_01"
-)
+def create_test():
+    jtest = open('microservice/books/sample_test.json')
+    try:
+        r = requests.post('http://localhost:8000/book/1', json =json.load(jtest))     
+    except requests.exceptions.ConnectionError:
+        print("connection failed!")
+        return False
+    if r.status_code == 200:
+        print("Create successful, status code: " , r.status_code)
+        return True
+    else:
+        print("Something is wrong, status code: ", r.status_code)
 
-mycursor = mydb.cursor()
-try:
-  mycursor.execute("CREATE TABLE borrowing (borrowing_id int AUTO_INCREMENT, book_id VARCHAR(255) NOT NULL , customer_id VARCHAR(255) NOT NULL, start_date DATETIME, PRIMARY KEY (borrowing_id))")
-  print("Create table 'borrowing' successful")
-except:
-  print("Table 'borrowing' already exists")
-
-
-
-def post():
-  now = datetime.now()
-  formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-
-  sql = "INSERT INTO borrowing (book_id, customer_id, start_date) VALUES (%s, %s, %s)"
-  val = ("Hall", "Highway", formatted_date)
-  mycursor.execute(sql, val)
-  mydb.commit()
-  print(mycursor.rowcount, "record inserted.")
-
-def get():
-
-  print("get:")
-  mycursor.execute("SELECT * FROM borrowing")
-  myresult = mycursor.fetchall()
-  print(to_json(myresult))
-
-def getLast():
-  print("get:")
-  mycursor.execute("SELECT * FROM customer ORDER BY customer_id DESC LIMIT 1")
-  myresult = mycursor.fetchall()
-  print(to_json(myresult))
-  
-#post()
-get()
-#getLast()
+def update_test():
+    jtest = open('microservice/books/sample_update_test.json')
+    try:
+        r = requests.put('http://localhost:8000/book/1', json =json.load(jtest))   
+    except requests.exceptions.ConnectionError:
+        print("connection failed!")
+        return False
+    if r.status_code == 200:
+        print("Update successful, status code: " , r.status_code)
+        return True
+    else:
+        print("Something is wrong, status code: ", r.status_code)
 
 
 
+def read_one_test():
+    try:
+        r = requests.get('http://localhost:8000/book/1')        
+    except requests.exceptions.ConnectionError:
+        print("connection failed!")
+        return False
+    if r.status_code == 200:
+        print("Read one successful, status code: ", r.status_code)
+        return True
+    else:
+        print("Something is wrong")
+
+def delete_test():
+    try:
+        r = requests.delete('http://localhost:8000/book/1')        
+    except requests.exceptions.ConnectionError:
+        print("connection failed!")
+        return False
+    if r.status_code == 200:
+        print("Delete successful, status code: ", r.status_code)
+        return True
+    else:
+        print("Something is wrong")
+    
 
 
+def my_test():
+    if read_all_test() and create_test() and update_test() and read_one_test() and delete_test():
+        print("\U0001f600")
+        return True
+    else: 
+        print("\U0001f622")
+        return False
 
+print("Test result: ", my_test())
