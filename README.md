@@ -3,11 +3,11 @@ API in Flask continerizzate con Mysql e MongoDb
 
 ## List of microservices 
 >1. [Books microservice](./TEST_FINALE/books):
->expose CRUD opereration, use flask framework and mongodb database
+>expose CRUD opereration, use flask framework and mysql database
 >1. [Customer microservice](./TEST_FINALE/customer):
 >expose CRUD opereration, use flask framework and mysql database
 >1. [Borrowing microservice](./TEST_FINALE/borrowing):
->expose CRUD opereration, use flask framework and mysql database
+>expose CRUD opereration, use flask framework and mongoDB database
 
 
 Develop 4 microservices as depicted in this diagram:
