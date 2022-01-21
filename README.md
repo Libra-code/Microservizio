@@ -31,3 +31,6 @@ Evaluation criteria:
 
 Impostazione servizio loggin
 ![](./img/1.png)
+
+
+![](./img/my_diagram.drawio.png)
