@@ -32,5 +32,5 @@ Evaluation criteria:
 Impostazione servizio loggin
 ![](./img/1.png)
 
-
+Struttura del collegamneto fra i microservizi 
 ![](./img/my_diagram.drawio.png)
