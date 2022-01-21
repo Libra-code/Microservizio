@@ -47,8 +47,8 @@ resource_fields = {
     'start_date':fields.String 
 }
 
+#notification setup
 def send_message(message):
-  #notification setup
   credentials = pika.PlainCredentials('rabbitmq', 'rabbitmq')
   parameters = pika.ConnectionParameters('rabbitmq',
                                     5672,

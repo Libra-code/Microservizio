@@ -12,7 +12,7 @@ API in Flask continerizzate con Mysql e MongoDb
 
 Develop 4 microservices as depicted in this diagram:
 
-![](diagram.png)
+![](./img/diagram.png)
 
 Microservices can be developed in any any techology , but they must comply with following constraints:
 
@@ -30,4 +30,4 @@ Evaluation criteria:
 - Docker and Kubernetes (0 to 5 points)
 
 Impostazione servizio loggin
-![](1.png)
+![](./img/1.png)
