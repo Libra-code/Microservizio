@@ -1,5 +1,5 @@
 #!/bin/sh 
-cd Implement_to_final
+cd Loggin
 docker-compose up --build -d 
 cd ..
 docker-compose up --build
