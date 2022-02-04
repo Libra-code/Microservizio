@@ -34,3 +34,6 @@ Impostazione servizio loggin
 
 Struttura del collegamneto fra i microservizi 
 ![](./img/my_diagram.drawio.png)
+
+
+Stato repository at consegna 
