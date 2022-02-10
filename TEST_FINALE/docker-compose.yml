@@ -56,11 +56,11 @@ services:
       - "3307:3307"
   
   #3
-  #costumer service
-  app_costumer:
-    container_name: flask_app_costumer
+  #customer service
+  app_customer:
+    container_name: flask_app_customer
     build: 
-      context: ./costumer
+      context: ./customer
       dockerfile: Dockerfile  
     command: python -u main.py
     ports:
@@ -68,15 +68,15 @@ services:
     volumes:
       - .:/app
     links:
-      - db_costumer
-  db_costumer:
-    container_name: flask_app_costumer_db
+      - db_customer
+  db_customer:
+    container_name: flask_app_customer_db
     image: mongo:4.0.27
     hostname: library_db
     environment:
       - MONGO_INITDB_DATABASE=library_db
     volumes:
-      - DB_costumer_data:/data/db
+      - DB_customer_data:/data/db
     ports:
       - "27017:27017"
 
@@ -102,4 +102,4 @@ services:
 volumes:
   DB_books_data : {}
   DB_borrowing_data : {}
-  DB_costumer_data : {}
+  DB_customer_data : {}
