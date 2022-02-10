@@ -19,12 +19,12 @@ jobs:
         docker build ./TEST_FINALE/books -t ${{ secrets.DOCKER_USER }}/test_finale_app_books
     - name: docker build 2
       run: |
-        docker build ./TEST_FINALE/costumer -t ${{ secrets.DOCKER_USER }}/test_finale_app_costumer
+        docker build ./TEST_FINALE/customer -t ${{ secrets.DOCKER_USER }}/test_finale_app_customer
     - name: docker build 3
       run: |
        docker build ./TEST_FINALE/borrowing -t ${{ secrets.DOCKER_USER }}/test_finale_app_borrowing
     - name: docker push
       run: |
         docker push ${{ secrets.DOCKER_USER }}/test_finale_app_books
-        docker push ${{ secrets.DOCKER_USER }}/test_finale_app_costumer
+        docker push ${{ secrets.DOCKER_USER }}/test_finale_app_customer
         docker push ${{ secrets.DOCKER_USER }}/test_finale_app_borrowing
