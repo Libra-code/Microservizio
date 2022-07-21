@@ -9,7 +9,7 @@ app = Flask(__name__)
 api = Api(app)
 
 app.config['MONGO_DBNAME'] = 'library_db'
-app.config['MONGO_URI'] = 'mongodb://flask_app_customer_db/library_db'
+app.config['MONGO_URI']    = 'mongodb://flask_app_customer_db/library_db'
 mongo = PyMongo(app)
 
 

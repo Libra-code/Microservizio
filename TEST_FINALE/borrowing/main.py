@@ -6,7 +6,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 import pika
 
-
 app = Flask(__name__)
 api = Api(app)
 
@@ -15,13 +14,13 @@ api = Api(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@flask_app_borrowing_db/db_01'
 engine = create_engine('mysql+pymysql://root:root@flask_app_borrowing_db/db_01')
-db = SQLAlchemy(app)
+db     = SQLAlchemy(app)
 
 class BorrowingModel(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    book_id = db.Column(db.Integer, nullable=False)
+    id          = db.Column(db.Integer, primary_key=True)
+    book_id     = db.Column(db.Integer, nullable=False)
     costumer_id = db.Column(db.Integer, nullable=False)
-    start_date = db.Column(db.String(100), nullable=False)
+    start_date  = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
         return f"Borrowing(book_id = {self.book_id},costumer_id = {self.costumer_id},start_date = {self.start_date})"
@@ -50,17 +49,12 @@ resource_fields = {
 #notification setup
 def send_message(message):
   credentials = pika.PlainCredentials('rabbitmq', 'rabbitmq')
-  parameters = pika.ConnectionParameters('rabbitmq',
-                                    5672,
-                                    '/',
-                                    credentials)
-  connection = pika.BlockingConnection(parameters)
-  channel = connection.channel()
+  parameters  = pika.ConnectionParameters('rabbitmq',5672,'/',credentials)
+  connection  = pika.BlockingConnection(parameters)
+  channel     = connection.channel()
   channel.queue_declare(queue='borrowing')
 
-  channel.basic_publish(exchange='',
-                    routing_key='borrowing',
-                    body=message)
+  channel.basic_publish(exchange='',routing_key='borrowing',body=message)
   connection.close()
 
 class Borrowing(Resource):
@@ -74,7 +68,7 @@ class Borrowing(Resource):
     
     @marshal_with(resource_fields)
     def post(self, borrowing_id):
-        args = borrowing_post_args.parse_args()
+        args   = borrowing_post_args.parse_args()
         result = BorrowingModel.query.filter_by(id=borrowing_id).first()
         if result:
             abort(409, message = "borrowing id taken...")
@@ -103,7 +97,7 @@ class Borrowing(Resource):
    
 
     def delete(self, borrowing_id):
-        args = borrowing_update_args.parse_args()
+        args   = borrowing_update_args.parse_args()
         result = BorrowingModel.query.filter_by(id=borrowing_id).first()
         if not result:
             abort(404, message = "Could not find borrowing with that id")

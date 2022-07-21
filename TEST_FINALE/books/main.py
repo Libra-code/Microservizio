@@ -13,7 +13,7 @@ api = Api(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@flask_app_books_db/db_01'
 engine = create_engine('mysql+pymysql://root:root@flask_app_books_db/db_01')
-db = SQLAlchemy(app)
+db     = SQLAlchemy(app)
 
 class BookModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
